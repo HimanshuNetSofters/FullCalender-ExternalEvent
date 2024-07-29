@@ -29,9 +29,12 @@
 <body>
     <div id="external-events">
         <h4>Draggable Events</h4>
-        <div class='fc-event'>Event 1</div>
+        <div id='draggable-el' class='fc-event' data-event='{ "title": "my event 1", "duration": "02:00" }'>drag me 1</div>
+        <div id='draggable-el' class='fc-event' data-event='{ "title": "my event 2", "duration": "02:00" }'>drag me 2</div>
+        <div id='draggable-el' class='fc-event' data-event='{ "title": "my event 3", "duration": "02:00" }'>drag me 3</div>
+        <!-- <div class='fc-event'>Event 1</div>
         <div class='fc-event'>Event 2</div>
-        <div class='fc-event'>Event 3</div>
+        <div class='fc-event'>Event 3</div> -->
     </div>
 
     <div id='calendar'></div>
@@ -52,15 +55,15 @@
                 },
                 editable: true,
                 droppable: true, // Allow dragging events to the calendar
-                drop: function(info) {
-                    if (info.draggedEl) {
-                        var eventData = {
-                            title: info.draggedEl.innerText,
-                            start: info.dateStr
-                        };
-                        calendar.addEvent(eventData);
-                    }
-                },
+                // drop: function(info) {
+                //     if (info.draggedEl) {
+                //         var eventData = {
+                //             title: info.draggedEl.innerText,
+                //             start: info.dateStr
+                //         };
+                //         calendar.addEvent(eventData);
+                //     }
+                // },
                 events: [
                         {
                         title: 'Business Lunch',
@@ -120,15 +123,29 @@
            
             
 
+            // new FullCalendar.Draggable(externalEventsEl, {
+            //     itemSelector: '.fc-event',
+            //     eventData: function(eventEl) {
+            //         return {
+            //             title: eventEl.innerText
+            //         };
+            //     }
+            // });
+
+
+
+            // this will only work in week or day view
             new FullCalendar.Draggable(externalEventsEl, {
                 itemSelector: '.fc-event',
                 eventData: function(eventEl) {
+                    console.log(JSON.parse(eventEl.getAttribute('data-event')));
                     return {
-                        title: eventEl.innerText
+                    title: JSON.parse(eventEl.getAttribute('data-event'))['title'],
+                    duration: JSON.parse(eventEl.getAttribute('data-event'))['duration'],
+                    overlap:false,
                     };
                 }
             });
-
 
 
         });
