@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FullCalendar with Draggable External Events</title>
+    <style>
+        #external-events {
+            margin: 0;
+            padding: 0;
+            width: 150px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        #external-events .fc-event {
+            margin: 0 0 10px 0;
+            padding: 5px;
+            background: #3a87ad;
+            color: #fff;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="external-events">
+        <h4>Draggable Events</h4>
+        <div class='fc-event'>Event 1</div>
+        <div class='fc-event'>Event 2</div>
+        <div class='fc-event'>Event 3</div>
+    </div>
+
+    <div id='calendar'></div>
+
+   
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var externalEventsEl = document.getElementById('external-events');
+
+            // Initialize the calendar
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                editable: true,
+                droppable: true, // Allow dragging events to the calendar
+                drop: function(info) {
+                    if (info.draggedEl) {
+                        var eventData = {
+                            title: info.draggedEl.innerText,
+                            start: info.dateStr
+                        };
+                        calendar.addEvent(eventData);
+                    }
+                }
+            });
+
+            calendar.render();
+
+           
+            
+
+            new FullCalendar.Draggable(externalEventsEl, {
+                itemSelector: '.fc-event',
+                eventData: function(eventEl) {
+                    return {
+                        title: eventEl.innerText
+                    };
+                }
+            });
+
+
+
+        });
+    </script>
+</body>
+</html>
